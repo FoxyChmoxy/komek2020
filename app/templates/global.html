@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <ul>
+    {% for help in helps %}
+        <li>{{ help.name }}</li>
+        <li>{{ help.phone }}</li>
+        <li>{{ help.city }}</li>
+        <li>{{ help.service }}</li>
+        <li>{% if help.is_giver %}
+                МОГУ помочь
+            {% else %}
+                НУЖНА помощь
+            {% endif %}
+        </li>
+        <hr>
+    {% endfor %}
+    </ul>
+{% endblock %}

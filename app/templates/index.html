@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="font-weight-bold text-center mt-4">
+        Важен вклад каждого!
+    </h1>
+    <h5 class="text-center">Мы призываем включится всех и создавать каждому вокруг себя очаги помощи.
+        В этой ситуации находятся все без исключения, поэтому важна инициатива каждого.</h5>
+    <div class="row mt-5 text-center">
+        <div class="col-md-6 justify-content-center mb-3">
+            <div class="card">
+                <div class="card-img">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/339620/pexels-photo-339620.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title font-weight-bold">Нужна помощь</h3>
+                  <p class="card-text">Заполните форму. Подробно распишите в чем вы нуждаетесь, какая помощь, лекарства, аппараты вам необходимы.</p>
+                  <a href="{{ url_for('needs') }}" class="btn btn-success btn-lg">Нужна помощь</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 justify-content-center mb-3">
+            <div class="card">
+                <div class="card-img">
+                    <img class="card-img-top" src="https://images.pexels.com/photos/6224/hands-people-woman-working.jpg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+                </div>
+                <div class="card-body">
+                  <h3 class="card-title font-weight-bold">Могу помочь</h3>
+                  <p class="card-text">Заполните форму. Максимально развернуто укажите чем вы можете помочь: лекарства, аппараты и любая другая форма помощи.</p>
+                  <a href="{{ url_for('giver') }}" class="btn btn-success btn-lg">Могу помочь</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
