@@ -26,11 +26,14 @@
                 </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="{{ url_for('giver') }}">Могу помочь</a>
-              </li>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="{{ url_for('global_app') }}">Глобальный поиск</a>
+                </li>
               </ul>
-              <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Что-то интересует?" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
+              <form action="{{ url_for('global_app') }}" method="get" class="form-inline my-2 my-lg-0">
+                <input name="service" id="service" class="form-control mr-sm-2" type="search" placeholder="Что-то интересует?" aria-label="Search">
+                <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Поиск" />
               </form>
             </div>
         </nav>
