@@ -33,6 +33,7 @@
               </ul>
               <form action="{{ url_for('global_app') }}" method="get" class="form-inline my-2 my-lg-0">
                 <input name="service" id="service" class="form-control mr-sm-2" type="search" placeholder="Что-то интересует?" aria-label="Search">
+                <input name="is_giver" id="is_giver" value="True" type="hidden">
                 <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Поиск" />
               </form>
             </div>

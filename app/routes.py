@@ -38,15 +38,19 @@ def global_app():
     is_giver = request.args.get('is_giver')
 
     result = Komek.query.all()
+    form = {'service':'', 'city':'', 'is_giver':''}
 
-    if city is not None:
+    if city is not None and city != '':
         result = [obj for obj in result if obj.city == city.lower()]
+        form['city'] = city
 
-    if is_giver is not None:
+    if is_giver is not None and is_giver != '':
         result = [obj for obj in result if obj.is_giver == (is_giver == 'True')]
+        form['is_giver'] = (is_giver == 'True')
 
-    if service is not None:
+    if service is not None and service != '':
         result = [obj for obj in result if service in obj.service]
+        form['service'] = service
     
-    return render_template('global.html', title='Глобальный поиск', helps=result)
+    return render_template('global.html', title='Глобальный поиск', helps=result, form=form)
     
