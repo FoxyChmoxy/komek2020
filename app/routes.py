@@ -41,7 +41,7 @@ def global_app():
     form = {'service':'', 'city':'', 'is_giver':''}
 
     if city is not None and city != '':
-        result = [obj for obj in result if obj.city == city.lower()]
+        result = [obj for obj in result if obj.city.strip() == city.lower()]
         form['city'] = city
 
     if is_giver is not None and is_giver != '':

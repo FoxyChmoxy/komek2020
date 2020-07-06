@@ -27,17 +27,11 @@
         </form>
     <ul>
     {% for help in helps %}
-        <li>{{ help.name }}</li>
-        <li>{{ help.phone }}</li>
-        <li>{{ help.city }}</li>
-        <li>{{ help.service }}</li>
-        <li>{% if help.is_giver %}
-                МОГУ помочь
-            {% else %}
-                НУЖНА помощь
-            {% endif %}
-        </li>
-        <hr>
+    <div class="col mb-4 border rounded px-3 py-3 shadow p-3">
+        <h3 class="card-title">{{ help.service }}</h3>
+        <span class="badge badge-success badge-pill">{{ help.city }}</span>
+        <p class="card-text">{{ help.name }}</p>
+        <a href="tel:{{help.phone}}">{{ help.phone }}</a>
+    </div>
     {% endfor %}
-    </ul>
 {% endblock %}
