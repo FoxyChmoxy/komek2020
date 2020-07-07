@@ -1,37 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <form action="">
-            <div class="row mt-5 border-bottom pb-4 mb-4">
-                <div class="col-md-3">
-                    <input id="service" name="service" type="text" class="form-control" placeholder="Что вы ищите?" value="{{ form['service'] }}">
-                </div>
-                <div class="col-md-3">
-                    <input id="city" name="city" type="text" class="form-control" placeholder="Укажите город" value="{{ form['city'] }}">
-                </div>
-                <div class="col-md-3">
-                    <select id="is_giver" name="is_giver" class="form-control">
-                        {% if form['is_giver'] %}
-                            <option selected value="True">Мне нужна помощь</option>
-                            <option value="False">Я хочу помочь</option>
-                        {% else %}
-                            <option value="True">Мне нужна помощь</option>
-                            <option selected value="False">Я хочу помочь</option>
-                        {% endif %}
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <input type="submit" value="Фильтр" class="btn btn-success btn-block">
-                </div>
+    <form action="">
+        <div class="row mt-5 border-bottom pb-4 mb-4">
+            <div class="col-md-3 mb-3">
+                <input id="service" name="service" type="text" class="form-control" placeholder="Что вы ищите?" value="{{ form['service'] }}">
             </div>
-        </form>
-    <ul>
-    {% for help in helps %}
-    <div class="col mb-4 border rounded px-3 py-3 shadow p-3">
-        <h3 class="card-title">{{ help.service }}</h3>
-        <span class="badge badge-success badge-pill">{{ help.city }}</span>
-        <p class="card-text">{{ help.name }}</p>
-        <a href="tel:{{help.phone}}">{{ help.phone }}</a>
+            <div class="col-md-3 mb-3">
+                <input id="city" name="city" type="text" class="form-control" placeholder="Укажите город" value="{{ form['city'] }}">
+            </div>
+            <div class="col-md-3 mb-3">
+                <select id="is_giver" name="is_giver" class="form-control">
+                    {% if form['is_giver'] %}
+                        <option selected value="True">Мне нужна помощь</option>
+                        <option value="False">Я хочу помочь</option>
+                    {% else %}
+                        <option value="True">Мне нужна помощь</option>
+                        <option selected value="False">Я хочу помочь</option>
+                    {% endif %}
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <input type="submit" value="Фильтр" class="btn btn-success btn-block">
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        {% for help in helps %}
+        <div class="col-md-12 mb-4 border rounded px-3 py-3 shadow p-3">
+            <div class="border-bottom pb-2 mb-2">
+                <span class="card-title font-weight-bold">{{ help.name }}</span>
+                <span class="badge badge-success badge-pill">{{ help.city }}</span>
+                {% if help.is_giver %}
+                    <span class="badge badge-primary badge-pill">Могу помочь</span>
+                {% else %}
+                    <span class="badge badge-danger badge-pill">Нужна помощь</span>
+                {% endif %}
+            </div>
+            {% if help.is_giver %}
+                <p class="card-text"><b>Могу дать:</b> {{ help.service }}</p>
+            {% else %}
+                <p class="card-text"><b>Мне нужно:</b> {{ help.service }}</p>
+            {% endif %}
+            <a href="tel:{{help.phone}}">{{ help.phone }}</a>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 {% endblock %}

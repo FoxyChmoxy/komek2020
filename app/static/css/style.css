@@ -32,3 +32,8 @@
     font-size:12px;
     margin-bottom:10px;
 }
+
+.card-title{
+    margin:0 !important;
+    padding:0 !important;
+}
