@@ -2,14 +2,11 @@
 
 {% block content %}
     <form action="">
-        <div class="row mt-5 border-bottom pb-4 mb-4">
-            <div class="col-md-3 mb-3">
-                <input id="service" name="service" type="text" class="form-control" placeholder="Что вы ищите?" value="{{ form['service'] }}">
+        <div class="row mt-5 pb-4">
+            <div class="col-md-6 mb-3">
+                <span class="badge badge-pill badge-success">1</span> Для начала определимся с тем что вам нужно. Вам <b>нужна помощь</b> или вы <b>хотите помочь</b>?
             </div>
-            <div class="col-md-3 mb-3">
-                <input id="city" name="city" type="text" class="form-control" placeholder="Укажите город" value="{{ form['city'] }}">
-            </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-6 mb-3">
                 <select id="is_giver" name="is_giver" class="form-control">
                     {% if form['is_giver'] %}
                         <option selected value="True">Мне нужна помощь</option>
@@ -20,11 +17,27 @@
                     {% endif %}
                 </select>
             </div>
-            <div class="col-md-3 mb-3">
-                <input type="submit" value="Фильтр" class="btn btn-success btn-block">
+            <div class="col-md-6 mb-3">
+                <span class="badge badge-pill badge-success">2</span> Теперь определимся с тем в каком <b>городе</b> вы находитесь.
+            </div>
+            <div class="col-md-6 mb-3">                
+                <input id="city" name="city" type="text" class="form-control" placeholder="Укажите город" value="{{ form['city'] }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <span class="badge badge-pill badge-success">3</span> Возможно существует какое-то <b>ключевое слово</b>, которое может упростить поиск, например: "лекарства", "еда" и т.д.
+            </div>
+            <div class="col-md-6 mb-3">
+                <input id="service" name="service" type="text" class="form-control" placeholder="Что вы ищите?" value="{{ form['service'] }}">
+            </div>
+            <div class="col-md-6 mb-3">
+                <span class="badge badge-pill badge-success">4</span> Ничего страшного, если вы оставите некоторые поля пустыми. <b>Все что остается сделать - это отфильтровать список по вашему запросу.</b>
+            </div>
+            <div class="col-md-6 mb-3">
+                <input type="submit" value="Фильтровать список" class="btn btn-success btn-block">
             </div>
         </div>
     </form>
+    <h1 class="pb-3 mb-4 border-bottom">Список</h1>
     <div class="row">
         {% for help in helps %}
         <div class="col-md-12 mb-4 border rounded px-3 py-3 shadow p-3">
