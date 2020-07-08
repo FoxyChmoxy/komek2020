@@ -110,19 +110,20 @@ def get_datetime(file_name):
     return datetime.strptime(file_name.split('_')[0], DATETIME_FORMAT)
 
 def get_all_givers():
-    for komek in Komek.query.filter_by(is_giver=True):
-        print(komek.name)
-        print(komek.phone)
-        print(komek.city)
-        print(komek.service)
-        print('--------------')
+    print_all(Komek.query.filter_by(is_giver=True))
 
 def get_all_needs():
-    for komek in Komek.query.filter_by(is_giver=False):
+    print_all(Komek.query.filter_by(is_giver=False))
+        
+
+def print_all(result):
+    for komek in result:
+        print(komek.id)
         print(komek.name)
         print(komek.phone)
         print(komek.city)
         print(komek.service)
+        print(f"flag: {komek.flag}")
         print('--------------')
 
 if __name__ == "__main__":

@@ -11,6 +11,16 @@ import inspect
 def index():
     return render_template('index.html', title='Главная страница')
 
+@app.route('/confirmed')
+def confirmed():
+    id = request.args.get('id')
+    phone = request.args.get('phone')
+
+    if id is None or id == '' or phone is None or phone == '':
+        return render_template('index.html', title='Главная страница')
+
+    return render_template('confirmed.html', title='Оформлено', id=id, phone=phone)
+
 @app.route('/needs', methods=['GET', 'POST'])
 def needs():
     form = NeedsForm()
@@ -19,7 +29,7 @@ def needs():
         city=form.city.data, service=form.needs.data, is_giver=False, flag=1)
         db.session.add(komek)
         db.session.commit()
-        return redirect(url_for('global_app', service=komek.service, city=komek.city, is_giver=True))
+        return redirect(url_for('confirmed', id=komek.id, phone=komek.phone))
     return render_template('needs.html', title='Нужна помощь', form=form)
 
 @app.route('/giver', methods=['GET', 'POST'])
@@ -30,8 +40,25 @@ def giver():
         city=form.city.data, service=form.gift.data, is_giver=True, flag=1)
         db.session.add(komek)
         db.session.commit()
-        return redirect(url_for('global_app', service=komek.service, city=komek.city, is_giver=False))
+        return redirect(url_for('confirmed', id=komek.id, phone=komek.phone))
     return render_template('giver.html', title='Могу помочь', form=form)
+
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+    if request.method == 'POST':
+        id = request.form['id']
+        phone = request.form['phone']
+
+        if id == 0 or phone is None or phone == '':
+            errors = ["Не все поля заполнены"]
+            return render_template('update.html', title='Обновить профиль', errors=errors)
+        
+        sql = f"UPDATE Komek SET flag = 0 WHERE id = {id} AND komek.phone = '{phone}'"
+        result = db.engine.execute(text(sql))
+
+        return render_template('index.html', title='Главная страница', updated=True)
+
+    return render_template('update.html', title='Обновить профиль', errors=None)
 
 @app.route('/global')
 def global_app():

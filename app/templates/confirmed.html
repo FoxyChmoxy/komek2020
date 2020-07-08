@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-5 pt-5 text-center">
+        <h3 class="border-bottom pb-3 mb-3"><b>ЗАПИШИТЕ</b> Ваши персональные данные, чтобы в будущем удалить свой профиль при необходимости</h3>
+        <h1>Ваш ID: <b>{{ id }}</b></h1>
+        <h1 class="border-bottom pb-3 mb-3">Ваш номер: <b>{{ phone }}</b></h1>
+        <a href="{{ url_for('global_app') }}" class="btn btn-success btn-block mt-4">Перейти к списку</a>
+    </div>
+{% endblock %}

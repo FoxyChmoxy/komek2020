@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="font-weight-bold text-center mt-4">
+            Важен вклад каждого!
+        </h1>
+        <h5 class="text-center">Мы призываем включиться всех и создавать каждому вокруг себя очаги помощи.
+            Если вы уже сделали доброе дело и хотите отключить свой профиль, введите свой <b>идентификатор</b> и тот <b>номер</b>, который вы ввели изначально.</h5>
+        <form action="" class="mt-5" method="POST">
+            {% if errors %}
+                {% for error in errors %}
+                    <span class="badge badge-danger">{{ error }}</span>
+                {% endfor %}
+            {% endif %}
+            <div class="form-group">
+                <input name="id" id="id" type="text" class="form-control" placeholder="Идентификатор профиля" required>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <input name="phone" id="phone" type="text" class="form-control" placeholder="Номер телефона" required>
+                    <div class="input-group-append">
+                        <input class="btn btn-danger" type="submit" value="Отключить">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
