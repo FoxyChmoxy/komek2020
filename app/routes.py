@@ -3,6 +3,8 @@ from app import app
 from app.forms import NeedsForm, GiverForm
 from app.models import Komek
 from app import db
+from sqlalchemy import text
+import inspect
 
 @app.route('/')
 @app.route('/index')
@@ -33,24 +35,43 @@ def giver():
 
 @app.route('/global')
 def global_app():
+    page = request.args.get('page', 1, type=int)
     service = request.args.get('service')
     city = request.args.get('city')
     is_giver = request.args.get('is_giver')
 
-    result = Komek.query.all()
     form = {'service':'', 'city':'', 'is_giver':''}
 
-    if city is not None and city != '':
-        result = [obj for obj in result if obj.city.strip() == city.lower()]
-        form['city'] = city
+    sql = 'SELECT komek.id AS komek_id, komek.name AS komek_name, komek.phone AS komek_phone, komek.city AS komek_city, komek.service AS komek_service, komek.is_giver AS komek_is_giver, komek.flag AS komek_flag FROM komek'
 
     if is_giver is not None and is_giver != '':
-        result = [obj for obj in result if obj.is_giver == (is_giver == 'True')]
+        sql += f" WHERE komek.is_giver IS {int(is_giver == 'True')}"
         form['is_giver'] = (is_giver == 'True')
 
+    if city is not None and city != '':
+        sql += f" AND komek.city LIKE '%{city.lower()}%'"
+        form['city'] = city
+
     if service is not None and service != '':
-        result = [obj for obj in result if service in obj.service]
+        sql += f" AND komek.service LIKE '%{service}%'"
         form['service'] = service
+
+    has_next = db.engine.execute(text(sql + f" limit {app.config['POSTS_PER_PAGE']} offset {app.config['POSTS_PER_PAGE'] * page}"))
+
+    next_url = url_for('global_app', page=page+1, service=service, city=city, is_giver=is_giver) if len([row for row in has_next]) > 0 else None
+    prev_url = url_for('global_app', page=page-1, service=service, city=city, is_giver=is_giver) if page > 1 else None
+
+    result = [jsonify(row) for row in db.engine.execute(text(sql + f" limit {app.config['POSTS_PER_PAGE']} offset {app.config['POSTS_PER_PAGE'] * (page - 1)}"))]
     
-    return render_template('global.html', title='Глобальный поиск', helps=result, form=form)
-    
+    return render_template('global.html', title='Глобальный поиск', helps=result, form=form, next_url=next_url, prev_url=prev_url)
+
+def jsonify(row):
+    return {
+        "id" : row[0],
+        "name" : row[1],
+        "phone" : row[2],
+        "city": row[3],
+        "service": row[4],
+        "is_giver": row[5],
+        "flag": row[6]
+    }

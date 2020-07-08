@@ -38,6 +38,14 @@
         </div>
     </form>
     <h1 class="pb-3 mb-4 border-bottom">Список</h1>
+    <p> Что вы ищите:
+        {% if form['is_giver'] %}
+            <b>Мне нужна помощь</b>
+        {% else %}
+            <b>Я хочу помочь</b>
+        {% endif %}
+        | <b> {{ form['city'] }} </b> | <b> {{ form['service'] }} </b>
+    </p>
     <div class="row">
         {% for help in helps %}
         <div class="col-md-12 mb-4 border rounded px-3 py-3 shadow p-3">
@@ -45,9 +53,9 @@
                 <span class="card-title font-weight-bold">{{ help.name }}</span>
                 <span class="badge badge-success badge-pill">{{ help.city }}</span>
                 {% if help.is_giver %}
-                    <span class="badge badge-primary badge-pill">Могу помочь</span>
+                    <span class="badge badge-primary badge-pill">могу помочь</span>
                 {% else %}
-                    <span class="badge badge-danger badge-pill">Нужна помощь</span>
+                    <span class="badge badge-danger badge-pill">нужна помощь</span>
                 {% endif %}
             </div>
             {% if help.is_giver %}
@@ -55,8 +63,26 @@
             {% else %}
                 <p class="card-text"><b>Мне нужно:</b> {{ help.service }}</p>
             {% endif %}
-            <a href="tel:{{help.phone}}">{{ help.phone }}</a>
+            <a href="tel:{{help[2]}}">{{ help.phone }}</a>
         </div>
         {% endfor %}
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {% if prev_url %}
+                        <a href="{{ prev_url }}" class="btn btn-success btn-block">Предыдущая</a>
+                    {% endif %}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {% if next_url %}
+                        <a href="{{ next_url }}" class="btn btn-success btn-block">Следующая</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
     </div>
 {% endblock %}
