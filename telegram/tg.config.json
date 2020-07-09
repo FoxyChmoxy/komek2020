@@ -1,0 +1,6 @@
+{
+    "telegram":{
+        "token":"1306850401:AAEw9WfzhMn99CXXXtw2y5IGbM7IqIkwCjE",
+        "api": "https://api.telegram.org/bot"
+    }
+}
