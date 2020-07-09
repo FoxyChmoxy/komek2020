@@ -8,7 +8,7 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import ConversationHandler
 from telegram.ext import Filters
-from functions import send_message, send_message_with_reply, help_button, info_button
+from functions import send_message, send_message_with_reply, help_button, info_button, get_values
 
 CONFIG = Config("tg.config.json").data
 TG_CONFIG = CONFIG['telegram']
@@ -18,10 +18,10 @@ def start_handler(bot: Bot, update: Updater):
         Отправить пользователю приветственные слова.
         Работает через команду '/start'.
     '''
-    send_message(bot, update, CONFIG['bot']['start_text'])
+    send_message(bot, update, CONFIG['bot']['default_text'])
 
-def button_help_handler(bot:Bot, update: Updater):
-    send_message(bot, update, CONFIG['bot']['help_text'])
+def button_help_handler(bot:Bot, update: Updater, is_giver: bool):
+    send_message(bot, update, get_values(is_giver))
 
 def message_handler(bot: Bot, update: Updater):
     '''
@@ -32,9 +32,11 @@ def message_handler(bot: Bot, update: Updater):
     result = CONFIG['bot']["default_text"]
 
     try:
-        if text == help_button:
-            return button_help_handler(bot, update)
-        if text == info_button:
+        if text == "Список кому нужна помощь":
+            return button_help_handler(bot, update, False)
+        if text == "Список кто может помочь":
+            return button_help_handler(bot, update, True)
+        if text == CONFIG["bot"]["default_text"]:
             return start_handler(bot, update)
     except:
         pass
@@ -42,8 +44,8 @@ def message_handler(bot: Bot, update: Updater):
     reply_markup = ReplyKeyboardMarkup(
         keyboard=[
             [
-                KeyboardButton(text=info_button),
-                KeyboardButton(text=help_button)
+                KeyboardButton(text="Список кому нужна помощь"),
+                KeyboardButton(text="Список кто может помочь")
             ]
         ],
         resize_keyboard=True
