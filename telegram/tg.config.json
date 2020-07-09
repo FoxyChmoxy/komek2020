@@ -2,5 +2,10 @@
     "telegram":{
         "token":"1306850401:AAEw9WfzhMn99CXXXtw2y5IGbM7IqIkwCjE",
         "api": "https://api.telegram.org/bot"
+    },
+    "bot":{
+        "default_text": "Используйте существующие кнопки и команды, чтобы взаимодействовать с ботом",
+        "start_text": "Привет! Это телеграм бот Komek2020",
+        "help_text": "Используйте то, что необходимо!"
     }
 }
