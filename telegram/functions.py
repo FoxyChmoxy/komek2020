@@ -7,8 +7,6 @@ import sqlalchemy
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
-help_button = 'Помощь | Көмек'
-info_button = 'Информация | Ақпарат'
 
 def send_message_with_reply(bot: Bot, update: Updater, text: str, 
 reply_markup: ReplyKeyboardMarkup):
@@ -22,19 +20,19 @@ def send_message(bot: Bot, update: Updater, text: str):
         chat_id = update.message.chat_id,
         text = text, parse_mode='HTML')
 
-def get_values(is_giver):
+def get_values(is_giver, offset):
     engine = create_engine('sqlite:///' + os.path.join(basedir, 'app.db'))
     with engine.connect() as con:
-        sql = sqlalchemy.text(f"select * from komek WHERE komek.is_giver IS {int(is_giver)} LIMIT 10")
+        sql = sqlalchemy.text(f"select * from komek WHERE komek.is_giver IS {int(is_giver)} LIMIT 10 OFFSET {offset * 10}")
         result = con.execute(sql)
         table = [jsonify(row) for row in result]
         text = ''
 
         for row in table:
-            text += f'Имя: {row["name"]} \n'
-            text += f'Телефон: {row["phone"]} \n'
-            text += f'Город: {row["city"]} \n'
-            text += f'Что нужно | Может дать: {row["service"]} \n\n'
+            text += f'🔸{row["name"]} \n'
+            text += f'{row["phone"]} \n'
+            text += f'{row["city"]} \n'
+            text += f'📢{row["service"]} \n\n'
         
         return text
 

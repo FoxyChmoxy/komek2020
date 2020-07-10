@@ -8,20 +8,17 @@ from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import ConversationHandler
 from telegram.ext import Filters
-from functions import send_message, send_message_with_reply, help_button, info_button, get_values
+from functions import send_message, send_message_with_reply, get_values
 
 CONFIG = Config("tg.config.json").data
 TG_CONFIG = CONFIG['telegram']
+OFFSET = {
+    "giver" : 0,
+    "needs" : 0
+}
 
-def start_handler(bot: Bot, update: Updater):
-    '''
-        Отправить пользователю приветственные слова.
-        Работает через команду '/start'.
-    '''
-    send_message(bot, update, CONFIG['bot']['default_text'])
-
-def button_help_handler(bot:Bot, update: Updater, is_giver: bool):
-    send_message(bot, update, get_values(is_giver))
+def button_help_handler(bot:Bot, update: Updater, is_giver: bool, offset: int):
+    send_message(bot, update, get_values(is_giver, offset))
 
 def message_handler(bot: Bot, update: Updater):
     '''
@@ -32,20 +29,20 @@ def message_handler(bot: Bot, update: Updater):
     result = CONFIG['bot']["default_text"]
 
     try:
-        if text == "Список кому нужна помощь":
-            return button_help_handler(bot, update, False)
-        if text == "Список кто может помочь":
-            return button_help_handler(bot, update, True)
-        if text == CONFIG["bot"]["default_text"]:
-            return start_handler(bot, update)
+        if text == CONFIG['bot']['help_btn']:
+            OFFSET["needs"] += 1
+            return button_help_handler(bot, update, False, OFFSET["needs"])
+        if text == CONFIG['bot']['giver_btn']:
+            OFFSET["giver"] += 1
+            return button_help_handler(bot, update, True, OFFSET["giver"])
     except:
         pass
     
     reply_markup = ReplyKeyboardMarkup(
         keyboard=[
             [
-                KeyboardButton(text="Список кому нужна помощь"),
-                KeyboardButton(text="Список кто может помочь")
+                KeyboardButton(text=CONFIG['bot']['help_btn']),
+                KeyboardButton(text=CONFIG['bot']['giver_btn'])
             ]
         ],
         resize_keyboard=True
@@ -55,12 +52,12 @@ def message_handler(bot: Bot, update: Updater):
 
 
 
-def set_start_handler(updater):
-    '''
-        Задать стартового обработчика.
-    '''
-    handler = CommandHandler("start", start_handler)
-    updater.dispatcher.add_handler(handler)
+# def set_start_handler(updater):
+#     '''
+#         Задать стартового обработчика.
+#     '''
+#     handler = CommandHandler("start", start_handler)
+#     updater.dispatcher.add_handler(handler)
 
 def set_message_handler(updater):
     '''
@@ -73,7 +70,7 @@ def set_all_handlers(updater):
     '''
         Задать все необходимые обработчики для телеграм-бота.
     '''
-    set_start_handler(updater)
+    # set_start_handler(updater)
     set_message_handler(updater)
 
 def main():
